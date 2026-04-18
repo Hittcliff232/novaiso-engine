@@ -4,6 +4,8 @@
 
 - `NovaIsoEditor`: a visual editor with docking, live preview, trigger editing, parallax editing, asset importing, and Python script editing.
 - `NovaIsoRuntime`: a lean runtime that loads a project folder and executes Python-driven gameplay.
+<img width="3436" height="1440" alt="{5598F5E3-7061-47FA-9E60-1A20BE5BCCBD}" src="https://github.com/user-attachments/assets/e1f9d0b7-ebf2-44ff-8c72-fea66f1821a1" />
+<img width="1596" height="931" alt="{845C7144-2EC2-44F5-8FAC-7C4EECCFD6CC}" src="https://github.com/user-attachments/assets/beeec38b-9746-49e5-83c8-72b37c9507a8" />
 
 ## Features
 
