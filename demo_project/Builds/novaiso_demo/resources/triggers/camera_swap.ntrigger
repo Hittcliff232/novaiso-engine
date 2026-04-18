@@ -1,0 +1,34 @@
+{
+  "name": "camera_swap",
+  "default_size": [
+    96.0,
+    128.0
+  ],
+  "color": [
+    0.2,
+    0.9,
+    1.0,
+    1.0
+  ],
+  "once": true,
+  "enabled": true,
+  "conditions": [
+    {
+      "script": "scripts/triggers.py",
+      "function": "require_side",
+      "args": "{}"
+    }
+  ],
+  "actions": [
+    {
+      "script": "scripts/triggers.py",
+      "function": "toggle_camera",
+      "args": "{}"
+    },
+    {
+      "script": "scripts/triggers.py",
+      "function": "log_message",
+      "args": "{\"message\":\"Automatic camera swap to isometric\"}"
+    }
+  ]
+}

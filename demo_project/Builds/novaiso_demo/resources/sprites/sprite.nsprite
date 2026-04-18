@@ -1,0 +1,30 @@
+{
+  "animations": [
+    {
+      "frames": [
+        {
+          "duration": 0.11999999731779099,
+          "texture": "assets/images/generated/sprite_frame.tga"
+        }
+      ],
+      "loop": true,
+      "name": "idle"
+    }
+  ],
+  "canvas_size": [
+    16,
+    16
+  ],
+  "default_animation": "idle",
+  "name": "sprite",
+  "pivot": [
+    0.0,
+    0.0
+  ],
+  "tint": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ]
+}

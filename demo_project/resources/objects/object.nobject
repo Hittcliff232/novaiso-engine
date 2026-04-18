@@ -1,0 +1,28 @@
+{
+  "collidable": false,
+  "collider_offset": [
+    0.0,
+    0.0
+  ],
+  "collider_size": [
+    32.0,
+    32.0
+  ],
+  "default_animation": "idle",
+  "dynamic": false,
+  "name": "object",
+  "properties": {},
+  "script": "",
+  "size": [
+    32.0,
+    32.0
+  ],
+  "sound": "",
+  "sprite": "resources/sprites/sprite.nsprite",
+  "tint": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ]
+}

@@ -1,0 +1,334 @@
+{
+  "assets": [
+    "assets/tileset.ppm",
+    "assets/player.ppm",
+    "assets/crate.ppm",
+    "assets/sky.ppm",
+    "assets/mountains.ppm",
+    "assets/clouds.ppm",
+    "assets/jump.wav",
+    "assets/demo_music.wav"
+  ],
+  "camera_mode": "side",
+  "default_language": "ru",
+  "developer": "NovaIso Sample Team",
+  "editor_language": "ru",
+  "editor_render_size": [
+    1600,
+    900
+  ],
+  "export_directory": "Builds",
+  "icon": "assets/player.ppm",
+  "levels": [
+    "levels/demo.niso"
+  ],
+  "main_menu": {
+    "accent": [
+      0.20000000298023224,
+      0.550000011920929,
+      0.949999988079071,
+      1.0
+    ],
+    "background": [
+      0.07999999821186066,
+      0.09000000357627869,
+      0.12999999523162842,
+      0.949999988079071
+    ],
+    "background_music": "",
+    "buttons": [
+      {
+        "action": "start_game",
+        "color": [
+          0.2199999988079071,
+          0.25999999046325684,
+          0.36000001430511475,
+          1.0
+        ],
+        "enabled": true,
+        "hover_color": [
+          0.30000001192092896,
+          0.36000001430511475,
+          0.5,
+          1.0
+        ],
+        "label": "Start Game",
+        "size": [
+          280.0,
+          52.0
+        ],
+        "target": "",
+        "text_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "action": "toggle_camera_mode",
+        "color": [
+          0.2199999988079071,
+          0.25999999046325684,
+          0.36000001430511475,
+          1.0
+        ],
+        "enabled": true,
+        "hover_color": [
+          0.30000001192092896,
+          0.36000001430511475,
+          0.5,
+          1.0
+        ],
+        "label": "Toggle Camera",
+        "size": [
+          280.0,
+          52.0
+        ],
+        "target": "",
+        "text_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "action": "quit_game",
+        "color": [
+          0.2199999988079071,
+          0.25999999046325684,
+          0.36000001430511475,
+          1.0
+        ],
+        "enabled": true,
+        "hover_color": [
+          0.30000001192092896,
+          0.36000001430511475,
+          0.5,
+          1.0
+        ],
+        "label": "Quit",
+        "size": [
+          280.0,
+          52.0
+        ],
+        "target": "",
+        "text_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "enabled": true,
+    "music_loop": true,
+    "panel_size": [
+      520.0,
+      0.0
+    ],
+    "position": [
+      0.5,
+      0.5
+    ],
+    "roundness": 18.0,
+    "spacing": 10.0,
+    "subtitle": "Python-driven platformer framework",
+    "subtitle_color": [
+      0.8199999928474426,
+      0.8600000143051147,
+      0.9200000166893005,
+      1.0
+    ],
+    "title": "NovaIso Engine",
+    "title_color": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "name": "NovaIso Demo",
+  "object_assets": [
+    "resources/objects/crate.nobject",
+    "resources/objects/object.nobject",
+    "resources/objects/player.nobject"
+  ],
+  "pause_menu": {
+    "accent": [
+      0.20000000298023224,
+      0.550000011920929,
+      0.949999988079071,
+      1.0
+    ],
+    "background": [
+      0.07999999821186066,
+      0.09000000357627869,
+      0.12999999523162842,
+      0.949999988079071
+    ],
+    "background_music": "",
+    "buttons": [
+      {
+        "action": "resume_game",
+        "color": [
+          0.2199999988079071,
+          0.25999999046325684,
+          0.36000001430511475,
+          1.0
+        ],
+        "enabled": true,
+        "hover_color": [
+          0.30000001192092896,
+          0.36000001430511475,
+          0.5,
+          1.0
+        ],
+        "label": "Resume",
+        "size": [
+          280.0,
+          52.0
+        ],
+        "target": "",
+        "text_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "action": "restart_level",
+        "color": [
+          0.2199999988079071,
+          0.25999999046325684,
+          0.36000001430511475,
+          1.0
+        ],
+        "enabled": true,
+        "hover_color": [
+          0.30000001192092896,
+          0.36000001430511475,
+          0.5,
+          1.0
+        ],
+        "label": "Restart Level",
+        "size": [
+          280.0,
+          52.0
+        ],
+        "target": "",
+        "text_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "action": "open_main_menu",
+        "color": [
+          0.2199999988079071,
+          0.25999999046325684,
+          0.36000001430511475,
+          1.0
+        ],
+        "enabled": true,
+        "hover_color": [
+          0.30000001192092896,
+          0.36000001430511475,
+          0.5,
+          1.0
+        ],
+        "label": "Main Menu",
+        "size": [
+          280.0,
+          52.0
+        ],
+        "target": "",
+        "text_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "action": "quit_game",
+        "color": [
+          0.2199999988079071,
+          0.25999999046325684,
+          0.36000001430511475,
+          1.0
+        ],
+        "enabled": true,
+        "hover_color": [
+          0.30000001192092896,
+          0.36000001430511475,
+          0.5,
+          1.0
+        ],
+        "label": "Quit",
+        "size": [
+          280.0,
+          52.0
+        ],
+        "target": "",
+        "text_color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ],
+    "enabled": true,
+    "music_loop": true,
+    "panel_size": [
+      520.0,
+      0.0
+    ],
+    "position": [
+      0.5,
+      0.5
+    ],
+    "roundness": 18.0,
+    "spacing": 10.0,
+    "subtitle": "Game is paused",
+    "subtitle_color": [
+      0.8199999928474426,
+      0.8600000143051147,
+      0.9200000166893005,
+      1.0
+    ],
+    "title": "Paused",
+    "title_color": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "preview_image": "",
+  "scripts": [
+    "scripts/player.py",
+    "scripts/crate.py",
+    "scripts/triggers.py"
+  ],
+  "sprite_assets": [
+    "resources/sprites/crate.nsprite",
+    "resources/sprites/player.nsprite",
+    "resources/sprites/sprite.nsprite"
+  ],
+  "startup_level": "levels/demo.niso",
+  "supported_languages": [
+    "en",
+    "ru"
+  ],
+  "trigger_assets": [
+    "resources/triggers/camera_swap.ntrigger",
+    "resources/triggers/checkpoint.ntrigger"
+  ],
+  "version": "1.1.0"
+}

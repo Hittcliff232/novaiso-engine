@@ -1,0 +1,30 @@
+{
+  "name": "player",
+  "sprite": "resources/sprites/player.nsprite",
+  "default_animation": "idle",
+  "size": [
+    28.0,
+    30.0
+  ],
+  "tint": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "dynamic": true,
+  "collidable": false,
+  "collider_offset": [
+    0.0,
+    0.0
+  ],
+  "collider_size": [
+    28.0,
+    30.0
+  ],
+  "sound": "assets/jump.wav",
+  "script": "scripts/player.py",
+  "properties": {
+    "name": "Hero"
+  }
+}

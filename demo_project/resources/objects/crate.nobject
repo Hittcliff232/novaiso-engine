@@ -1,0 +1,30 @@
+{
+  "name": "crate",
+  "sprite": "resources/sprites/crate.nsprite",
+  "default_animation": "idle",
+  "size": [
+    28.0,
+    28.0
+  ],
+  "tint": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "dynamic": false,
+  "collidable": true,
+  "collider_offset": [
+    0.0,
+    0.0
+  ],
+  "collider_size": [
+    28.0,
+    28.0
+  ],
+  "sound": "assets/jump.wav",
+  "script": "scripts/crate.py",
+  "properties": {
+    "phase": 0.0
+  }
+}

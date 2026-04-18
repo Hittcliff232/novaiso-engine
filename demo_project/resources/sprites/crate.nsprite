@@ -1,0 +1,30 @@
+{
+  "name": "crate",
+  "canvas_size": [
+    28,
+    28
+  ],
+  "default_animation": "idle",
+  "pivot": [
+    0.0,
+    0.0
+  ],
+  "tint": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "animations": [
+    {
+      "name": "idle",
+      "loop": true,
+      "frames": [
+        {
+          "texture": "assets/crate.ppm",
+          "duration": 0.16
+        }
+      ]
+    }
+  ]
+}

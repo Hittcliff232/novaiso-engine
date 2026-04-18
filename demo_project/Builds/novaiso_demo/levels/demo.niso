@@ -1,0 +1,1049 @@
+{
+  "clear_color": [
+    0.05000000074505806,
+    0.07000000029802322,
+    0.10000000149011612,
+    1.0
+  ],
+  "entities": [
+    {
+      "animation": "idle",
+      "animation_speed": 1.0,
+      "archetype": "player",
+      "collidable": false,
+      "collider_offset": [
+        0.0,
+        0.0
+      ],
+      "collider_size": [
+        28.0,
+        30.0
+      ],
+      "dynamic": true,
+      "id": "player",
+      "object_asset": "resources/objects/player.nobject",
+      "on_trigger": "on_trigger",
+      "position": [
+        -288.0,
+        256.0
+      ],
+      "properties": {
+        "name": "Hero"
+      },
+      "script": "scripts/player.py",
+      "size": [
+        28.0,
+        30.0
+      ],
+      "sound": "assets/jump.wav",
+      "sprite_asset": "resources/sprites/player.nsprite",
+      "texture": "assets/player.ppm",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "uv": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    },
+    {
+      "animation": "idle",
+      "animation_speed": 1.0,
+      "archetype": "prop",
+      "collidable": true,
+      "collider_offset": [
+        0.0,
+        0.0
+      ],
+      "collider_size": [
+        28.0,
+        28.0
+      ],
+      "dynamic": false,
+      "id": "crate_01",
+      "object_asset": "resources/objects/crate.nobject",
+      "on_trigger": "on_trigger",
+      "position": [
+        352.0,
+        192.0
+      ],
+      "properties": {
+        "phase": 0.0
+      },
+      "script": "scripts/crate.py",
+      "size": [
+        28.0,
+        28.0
+      ],
+      "sound": "assets/jump.wav",
+      "sprite_asset": "resources/sprites/crate.nsprite",
+      "texture": "assets/crate.ppm",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "uv": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    },
+    {
+      "animation": "idle",
+      "animation_speed": 1.0,
+      "archetype": "generic",
+      "collidable": false,
+      "collider_offset": [
+        0.0,
+        0.0
+      ],
+      "collider_size": [
+        32.0,
+        32.0
+      ],
+      "dynamic": false,
+      "id": "entity_2",
+      "object_asset": "",
+      "on_trigger": "",
+      "position": [
+        64.0,
+        64.0
+      ],
+      "properties": {},
+      "script": "",
+      "size": [
+        32.0,
+        32.0
+      ],
+      "sound": "",
+      "sprite_asset": "",
+      "texture": "",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "uv": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    },
+    {
+      "animation": "idle",
+      "animation_speed": 1.0,
+      "archetype": "sprite_frame",
+      "collidable": false,
+      "collider_offset": [
+        0.0,
+        0.0
+      ],
+      "collider_size": [
+        16.0,
+        16.0
+      ],
+      "dynamic": false,
+      "id": "entity_3",
+      "object_asset": "",
+      "on_trigger": "",
+      "position": [
+        -168.0,
+        216.0
+      ],
+      "properties": {},
+      "script": "",
+      "size": [
+        16.0,
+        16.0
+      ],
+      "sound": "",
+      "sprite_asset": "",
+      "texture": "assets/images/generated/sprite_frame.tga",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "uv": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    },
+    {
+      "animation": "idle",
+      "animation_speed": 1.0,
+      "archetype": "sprite_frame",
+      "collidable": false,
+      "collider_offset": [
+        0.0,
+        0.0
+      ],
+      "collider_size": [
+        16.0,
+        16.0
+      ],
+      "dynamic": false,
+      "id": "entity_4",
+      "object_asset": "",
+      "on_trigger": "",
+      "position": [
+        192.0,
+        224.0
+      ],
+      "properties": {},
+      "script": "",
+      "size": [
+        16.0,
+        16.0
+      ],
+      "sound": "",
+      "sprite_asset": "",
+      "texture": "assets/images/generated/sprite_frame.tga",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "uv": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    },
+    {
+      "animation": "idle",
+      "animation_speed": 1.0,
+      "archetype": "layer1_bottom",
+      "collidable": true,
+      "collider_offset": [
+        0.0,
+        0.0
+      ],
+      "collider_size": [
+        625.0,
+        350.0
+      ],
+      "dynamic": false,
+      "id": "entity_5",
+      "object_asset": "",
+      "on_trigger": "",
+      "position": [
+        -64.0,
+        288.0
+      ],
+      "properties": {},
+      "script": "",
+      "size": [
+        625.0,
+        350.0
+      ],
+      "sound": "",
+      "sprite_asset": "",
+      "texture": "assets/images/layer1_bottom.png",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "uv": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    },
+    {
+      "animation": "idle",
+      "animation_speed": 1.0,
+      "archetype": "layer1_bottom",
+      "collidable": true,
+      "collider_offset": [
+        0.0,
+        0.0
+      ],
+      "collider_size": [
+        625.0,
+        350.0
+      ],
+      "dynamic": false,
+      "id": "entity_6",
+      "object_asset": "",
+      "on_trigger": "",
+      "position": [
+        -672.0,
+        288.0
+      ],
+      "properties": {},
+      "script": "",
+      "size": [
+        625.0,
+        350.0
+      ],
+      "sound": "",
+      "sprite_asset": "",
+      "texture": "assets/images/layer1_bottom.png",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "uv": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    }
+  ],
+  "name": "Feature Showcase",
+  "parallax_layers": [
+    {
+      "depth": -300.0,
+      "name": "Sky",
+      "offset": [
+        0.0,
+        -32.0
+      ],
+      "repeat": true,
+      "scale": [
+        420.0,
+        220.0
+      ],
+      "speed": [
+        0.05000000074505806,
+        0.0
+      ],
+      "texture": "assets/sky.ppm",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "visible": true,
+      "zoom_factor": 0.4000000059604645
+    },
+    {
+      "depth": -220.0,
+      "name": "Mountains",
+      "offset": [
+        0.0,
+        24.0
+      ],
+      "repeat": true,
+      "scale": [
+        300.0,
+        150.0
+      ],
+      "speed": [
+        0.18000000715255737,
+        0.0
+      ],
+      "texture": "assets/mountains.ppm",
+      "tint": [
+        0.8799999952316284,
+        0.9200000166893005,
+        0.9599999785423279,
+        1.0
+      ],
+      "visible": true,
+      "zoom_factor": 0.75
+    },
+    {
+      "depth": -160.0,
+      "name": "Clouds",
+      "offset": [
+        0.0,
+        -12.0
+      ],
+      "repeat": true,
+      "scale": [
+        180.0,
+        90.0
+      ],
+      "speed": [
+        0.3199999928474426,
+        0.0
+      ],
+      "texture": "assets/clouds.ppm",
+      "tint": [
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "visible": true,
+      "zoom_factor": 1.100000023841858
+    }
+  ],
+  "player_spawn": [
+    96.0,
+    120.0
+  ],
+  "post_effects": [
+    "outline",
+    "bloom",
+    "pixelate"
+  ],
+  "tile_height": 32,
+  "tile_layers": [
+    {
+      "collidable": false,
+      "depth": 0.0,
+      "height": 12,
+      "name": "Decor",
+      "tiles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        4,
+        4,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        4,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        1,
+        1,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        1,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "visible": true,
+      "width": 20
+    },
+    {
+      "collidable": true,
+      "depth": 1.0,
+      "height": 12,
+      "name": "Collision",
+      "tiles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        4,
+        4,
+        4,
+        0,
+        0,
+        0,
+        4,
+        4,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        1,
+        1,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        1,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "visible": true,
+      "width": 20
+    }
+  ],
+  "tile_width": 32,
+  "tileset": {
+    "collision": [
+      {
+        "id": 1,
+        "type": "solid"
+      },
+      {
+        "id": 2,
+        "type": "slope_left"
+      },
+      {
+        "id": 3,
+        "type": "slope_right"
+      },
+      {
+        "id": 4,
+        "type": "one_way"
+      }
+    ],
+    "columns": 4,
+    "rows": 1,
+    "texture": "assets/tileset.ppm",
+    "tile_height": 32,
+    "tile_width": 32
+  },
+  "triggers": [
+    {
+      "actions": [
+        {
+          "args": "{\"message\":\"Checkpoint touched\"}",
+          "function": "log_message",
+          "script": "scripts/triggers.py"
+        },
+        {
+          "args": "{\"sound\":\"assets/jump.wav\"}",
+          "function": "play_sound",
+          "script": "scripts/triggers.py"
+        }
+      ],
+      "asset": "resources/triggers/checkpoint.ntrigger",
+      "color": [
+        1.0,
+        0.699999988079071,
+        0.10000000149011612,
+        1.0
+      ],
+      "conditions": [
+        {
+          "args": "{}",
+          "function": "always_true",
+          "script": "scripts/triggers.py"
+        }
+      ],
+      "enabled": true,
+      "name": "Checkpoint",
+      "once": false,
+      "position": [
+        288.0,
+        160.0
+      ],
+      "size": [
+        96.0,
+        96.0
+      ]
+    },
+    {
+      "actions": [
+        {
+          "args": "{}",
+          "function": "toggle_camera",
+          "script": "scripts/triggers.py"
+        },
+        {
+          "args": "{\"message\":\"Automatic camera swap to isometric\"}",
+          "function": "log_message",
+          "script": "scripts/triggers.py"
+        }
+      ],
+      "asset": "resources/triggers/camera_swap.ntrigger",
+      "color": [
+        0.20000000298023224,
+        0.8999999761581421,
+        1.0,
+        1.0
+      ],
+      "conditions": [
+        {
+          "args": "{}",
+          "function": "require_side",
+          "script": "scripts/triggers.py"
+        }
+      ],
+      "enabled": true,
+      "name": "CameraSwap",
+      "once": true,
+      "position": [
+        544.0,
+        192.0
+      ],
+      "size": [
+        96.0,
+        128.0
+      ]
+    }
+  ]
+}

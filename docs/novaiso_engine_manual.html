@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NovaIso-Engine: Полный мануал</title>
+  <style>
+    :root {
+      --bg: #06111c;
+      --panel: rgba(10, 23, 37, 0.92);
+      --panel-2: rgba(15, 31, 49, 0.96);
+      --line: rgba(112, 158, 214, 0.2);
+      --text: #e6f1ff;
+      --muted: #98afc9;
+      --accent: #53b7ff;
+      --accent-2: #6ef3d6;
+      --warn: #ff9a62;
+      --good: #83f6a2;
+      --code: #091522;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(83, 183, 255, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(110, 243, 214, 0.12), transparent 22%),
+        linear-gradient(180deg, #040b13, #07111b 28%, #081523 100%);
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-2); }
+    code, pre { font-family: "Cascadia Mono", "Consolas", monospace; }
+
+    .hero {
+      padding: 56px 24px 28px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(9, 24, 39, 0.95), rgba(6, 17, 28, 0.8));
+    }
+
+    .hero-inner, .layout {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--accent-2);
+      background: rgba(12, 27, 43, 0.72);
+    }
+
+    h1, h2, h3, h4 { margin: 0 0 14px; line-height: 1.14; }
+    h1 { font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.03em; }
+    h2 { font-size: 30px; margin-top: 42px; }
+    h3 { font-size: 22px; margin-top: 22px; color: var(--accent-2); }
+    p, li { color: var(--muted); line-height: 1.72; }
+
+    .lead {
+      max-width: 980px;
+      font-size: 18px;
+      color: #d5e8ff;
+      margin: 16px 0 0;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 24px;
+      padding: 24px 0 64px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar input {
+      width: 100%;
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(8, 18, 29, 0.95);
+      color: var(--text);
+    }
+
+    .toc {
+      display: grid;
+      gap: 8px;
+      max-height: calc(100vh - 120px);
+      overflow: auto;
+    }
+
+    .toc a {
+      padding: 10px 12px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .toc a:hover, .toc a.active {
+      border-color: var(--line);
+      background: rgba(83, 183, 255, 0.08);
+      color: var(--text);
+    }
+
+    .content {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: var(--panel-2);
+      box-shadow: var(--shadow);
+    }
+
+    .card, .note, .warning, .good, table, pre {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(7, 18, 29, 0.84);
+    }
+
+    .card, .note, .warning, .good { padding: 18px 20px; margin: 16px 0; }
+    .note { border-color: rgba(83, 183, 255, 0.35); }
+    .warning { border-color: rgba(255, 154, 98, 0.4); }
+    .good { border-color: rgba(131, 246, 162, 0.35); }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin: 18px 0;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0 0;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(83, 183, 255, 0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { color: var(--accent-2); background: rgba(83, 183, 255, 0.06); }
+    tr:last-child td { border-bottom: 0; }
+
+    pre {
+      margin: 18px 0;
+      padding: 16px 18px;
+      overflow: auto;
+      color: #d7f6ff;
+      background: linear-gradient(180deg, #07111c, #0a1623);
+    }
+
+    .section-index {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin: 18px 0;
+    }
+
+    .section-index a {
+      display: block;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(83, 183, 255, 0.05);
+      color: var(--text);
+    }
+
+    .muted { color: var(--muted); }
+    .warn { color: var(--warn); }
+    .ok { color: var(--good); }
+    .hidden { display: none !important; }
+
+    @media (max-width: 1100px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .content { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">NovaIso-Engine • Полный HTML-мануал</div>
+      <h1>Руководство по движку, редактору, UI, триггерам, ресурсам и скриптам</h1>
+      <p class="lead">
+        Этот документ собран по текущему исходному коду NovaIso-Engine. Здесь описаны окна редактора,
+        кнопки, режимы работы, встроенные действия, форматы ресурсов, HTML UI и Python-скрипты с примерами.
+      </p>
+      <div class="pill-list">
+        <span class="pill">Редактор</span>
+        <span class="pill">Рантайм</span>
+        <span class="pill">Триггеры</span>
+        <span class="pill">HTML UI</span>
+        <span class="pill">Python API</span>
+        <span class="pill">Сборка проекта</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <input id="search" type="search" placeholder="Фильтр по разделам и тексту">
+      <nav class="toc" id="toc">
+        <a href="#overview">1. Обзор</a>
+        <a href="#layout">2. Структура проекта</a>
+        <a href="#controls">3. Управление и хоткеи</a>
+        <a href="#launcher">4. Окно запуска проекта</a>
+        <a href="#menu">5. Верхнее меню</a>
+        <a href="#toolbar">6. Тулбар</a>
+        <a href="#viewport">7. Viewport</a>
+        <a href="#hierarchy">8. Hierarchy</a>
+        <a href="#layers">9. Layers</a>
+        <a href="#properties">10. Properties</a>
+        <a href="#triggers">11. Trigger Editor</a>
+        <a href="#browser">12. Asset Browser</a>
+        <a href="#inspector">13. Resource Inspector</a>
+        <a href="#project-settings">14. Project Settings</a>
+        <a href="#menu-designer">15. Menu Designer</a>
+        <a href="#ui-editor">16. UI Editor</a>
+        <a href="#shader-stack">17. Shader Stack</a>
+        <a href="#audio-mixer">18. Audio Mixer</a>
+        <a href="#code-editor">19. Code Editor</a>
+        <a href="#sprite-editor">20. Sprite Editor</a>
+        <a href="#logs-history">21. Output и History</a>
+        <a href="#runtime">22. Рантайм и HUD</a>
+        <a href="#trigger-api">23. Условия и действия триггеров</a>
+        <a href="#python-api">24. Python API</a>
+        <a href="#script-examples">25. Примеры скриптов</a>
+        <a href="#html-ui">26. HTML UI</a>
+        <a href="#new-systems">27. Новые системы и workflow</a>
+        <a href="#formats">28. Форматы файлов</a>
+        <a href="#build">29. Сборка и экспорт</a>
+        <a href="#limits">30. Ограничения и текущие рамки</a>
+      </nav>
+    </aside>
+
+    <main class="content" id="manual">
+      <section id="overview" data-search>
+        <h2>1. Обзор</h2>
+        <p>
+          NovaIso-Engine состоит из двух основных частей: редактор сцен и рантайм. Редактор отвечает за создание уровней,
+          настройку света, UI, триггеров, шейдеров, ресурсов и упаковку проекта. Рантайм загружает упакованный проект,
+          показывает splash screen, главное меню, сцену, HUD и обрабатывает Python-скрипты.
+        </p>
+        <div class="section-index">
+          <a href="#menu">Что делает каждая кнопка редактора</a>
+          <a href="#trigger-api">Какие действия умеют триггеры</a>
+          <a href="#python-api">Какие методы доступны в Python</a>
+          <a href="#new-systems">Как пользоваться камерами, анимациями и AI builder</a>
+          <a href="#html-ui">Как устроен HTML UI и что он поддерживает</a>
+        </div>
+        <div class="note">
+          <strong>Важно:</strong> текущий HTML UI в движке не является встроенным браузером. Это собственный лёгкий runtime,
+          который понимает ограниченный набор HTML-тегов, CSS-свойств и JS-присваиваний.
+        </div>
+      </section>
+
+      <section id="layout" data-search>
+        <h2>2. Структура проекта</h2>
+        <p>Когда создаётся проект, редактор поддерживает следующую структуру каталогов:</p>
+        <pre><code>assets/
+assets/images/
+assets/audio/
+levels/
+localization/
+resources/sprites/
+resources/objects/
+resources/animations/
+resources/triggers/
+scripts/
+shaders/
+shaders/designer/
+ui/
+project.json</code></pre>
+        <table>
+          <thead>
+            <tr><th>Путь</th><th>Назначение</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>assets/images</code></td><td>Исходные текстуры и картинки.</td></tr>
+            <tr><td><code>assets/audio</code></td><td>Музыка, звуки, аудиоклипы.</td></tr>
+            <tr><td><code>levels</code></td><td>Файлы уровней <code>.niso</code>.</td></tr>
+            <tr><td><code>resources/sprites</code></td><td>Спрайтовые ресурсы <code>.nsprite</code>.</td></tr>
+            <tr><td><code>resources/objects</code></td><td>Объектные ресурсы <code>.nobject</code>.</td></tr>
+            <tr><td><code>resources/animations</code></td><td>Ресурсы анимаций <code>.nanim</code> для кривых движения, деформации и fade.</td></tr>
+            <tr><td><code>resources/triggers</code></td><td>Ресурсы триггеров <code>.ntrigger</code>.</td></tr>
+            <tr><td><code>scripts</code></td><td>Python-скрипты объектов и логики.</td></tr>
+            <tr><td><code>shaders</code></td><td>Фрагментные шейдеры постэффектов рантайма.</td></tr>
+            <tr><td><code>shaders/designer</code></td><td>Пресеты Shader Designer в формате <code>.nshader</code>.</td></tr>
+            <tr><td><code>ui</code></td><td>HTML/CSS/JS интерфейс движка.</td></tr>
+            <tr><td><code>localization</code></td><td>JSON-файлы переводов редактора и проекта.</td></tr>
+            <tr><td><code>project.json</code></td><td>Главная конфигурация проекта.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="controls" data-search>
+        <h2>3. Управление и хоткеи</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Управление редактором</h3>
+            <table>
+              <thead><tr><th>Действие</th><th>Клавиша / мышь</th></tr></thead>
+              <tbody>
+                <tr><td>Сохранить всё</td><td><code>Ctrl + S</code></td></tr>
+                <tr><td>Запустить сборку и рантайм</td><td><code>F5</code></td></tr>
+                <tr><td>Удалить выбранный объект</td><td><code>Delete</code></td></tr>
+                <tr><td>Панорама viewport</td><td>средняя кнопка мыши</td></tr>
+                <tr><td>Зум viewport</td><td>колесо мыши</td></tr>
+                <tr><td>Растянуть объект / триггер</td><td><code>Alt + ЛКМ</code> по ручкам</td></tr>
+                <tr><td>Контекстное меню</td><td>правая кнопка мыши</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Управление в игре</h3>
+            <table>
+              <thead><tr><th>Действие</th><th>Клавиша</th></tr></thead>
+              <tbody>
+                <tr><td>Движение влево / вправо</td><td><code>A</code> / <code>D</code></td></tr>
+                <tr><td>Движение вверх / вниз</td><td><code>W</code> / <code>S</code></td></tr>
+                <tr><td>Прыжок</td><td><code>Space</code></td></tr>
+                <tr><td>Бег</td><td><code>Left Shift</code></td></tr>
+                <tr><td>Взаимодействие</td><td><code>E</code></td></tr>
+                <tr><td>Переключить режим камеры</td><td><code>Tab</code></td></tr>
+                <tr><td>Пауза / меню</td><td><code>Esc</code></td></tr>
+                <tr><td>Полный экран</td><td><code>F11</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="launcher" data-search>
+        <h2>4. Окно запуска проекта</h2>
+        <p>
+          При старте редактора открывается launcher. Это точка входа, где ты выбираешь существующий проект
+          или создаёшь новый. Если проект недавно открывался, редактор помнит путь и может быстро загрузить его снова.
+        </p>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>New Project</code></td><td>Создаёт новый проект, подготавливает каталоги, базовый <code>project.json</code> и стартовые ресурсы.</td></tr>
+            <tr><td><code>Open Project</code></td><td>Открывает уже существующий проект по пути к папке или файлу конфигурации.</td></tr>
+            <tr><td><code>Recent Projects</code></td><td>Список последних проектов для быстрого возврата к работе.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="menu" data-search>
+        <h2>5. Верхнее меню</h2>
+        <p>
+          Верхняя строка меню управляет сохранением, загрузкой уровней, показом окон редактора и запуском билда.
+          Ниже приведены логические группы действий, которые доступны из main menu bar.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h3>Project</h3>
+            <table>
+              <thead><tr><th>Команда</th><th>Назначение</th></tr></thead>
+              <tbody>
+                <tr><td><code>Save All</code></td><td>Сохраняет уровень, проект и открытые ресурсы.</td></tr>
+                <tr><td><code>Build Package</code></td><td>Собирает экспортный пакет игры в папку экспорта.</td></tr>
+                <tr><td><code>Build And Run</code></td><td>Собирает пакет и сразу запускает рантайм.</td></tr>
+                <tr><td><code>Exit</code></td><td>Закрывает редактор.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Level</h3>
+            <table>
+              <thead><tr><th>Команда</th><th>Назначение</th></tr></thead>
+              <tbody>
+                <tr><td><code>New Level</code></td><td>Создаёт новый файл уровня и сбрасывает текущую сцену.</td></tr>
+                <tr><td><code>Open Level</code></td><td>Загружает существующий <code>.niso</code>.</td></tr>
+                <tr><td><code>Save Level</code></td><td>Сохраняет только открытую сцену.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Windows</h3>
+            <table>
+              <thead><tr><th>Окно</th><th>Назначение</th></tr></thead>
+              <tbody>
+                <tr><td><code>Hierarchy</code></td><td>Дерево сущностей, триггеров, аудио, света и групп.</td></tr>
+                <tr><td><code>Properties</code></td><td>Редактор параметров выбранного элемента.</td></tr>
+                <tr><td><code>Trigger Editor</code></td><td>Граф условий и действий триггера.</td></tr>
+                <tr><td><code>Layers</code></td><td>Порядок слоёв объектов, параллакса, света и аудио.</td></tr>
+                <tr><td><code>Asset Browser</code></td><td>Просмотр контента проекта.</td></tr>
+                <tr><td><code>Resource Inspector</code></td><td>Редактор файловых ресурсов.</td></tr>
+                <tr><td><code>Project Settings</code></td><td>Общие параметры игры.</td></tr>
+                <tr><td><code>Menu Designer</code></td><td>Редактор главного меню и меню паузы.</td></tr>
+                <tr><td><code>UI Editor</code></td><td>Настройка HTML UI и legacy widgets.</td></tr>
+                <tr><td><code>Shader Stack</code></td><td>Постэффекты и RT lighting.</td></tr>
+                <tr><td><code>Audio Mixer</code></td><td>Громкости master/music/sfx.</td></tr>
+                <tr><td><code>Code Editor</code></td><td>Редактор скриптов и текстовых файлов.</td></tr>
+                <tr><td><code>Sprite Editor</code></td><td>Пиксельный редактор спрайтов и анимаций.</td></tr>
+                <tr><td><code>Animation Editor</code></td><td>Редактор кривых движения, opacity, scale, rotation и skew.</td></tr>
+                <tr><td><code>AI Level Builder</code></td><td>Пошаговый генератор черновика уровня из ассетов проекта.</td></tr>
+                <tr><td><code>Output</code></td><td>Лог редактора.</td></tr>
+                <tr><td><code>History</code></td><td>Список действий и их история.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="good">
+          В актуальной версии у движка уже есть полноценные окна для virtual camera, scene animation, AI Level Builder и Shader Designer.
+          Устаревшие замечания про отсутствие этих редакторов больше не актуальны.
+        </div>
+      </section>
+
+      <section id="toolbar" data-search>
+        <h2>6. Тулбар</h2>
+        <p>
+          Тулбар расположен над viewport и даёт быстрый доступ к режимам редактора и запуску. Это самое частое место работы во время сборки сцены.
+        </p>
+        <table>
+          <thead><tr><th>Кнопка / поле</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Switch Camera</code></td><td>Переключает режим отображения между side-view и isometric-view прямо в редакторе.</td></tr>
+            <tr><td><code>Live Preview</code></td><td>Переключает обновление сцены в режиме предпросмотра.</td></tr>
+            <tr><td><code>Debug Draw</code></td><td>Показывает коллайдеры, триггеры, рамки и служебную геометрию.</td></tr>
+            <tr><td><code>Editor Audio</code></td><td>Разрешает или запрещает проигрывание звука в редакторе.</td></tr>
+            <tr><td><code>RT Lights</code></td><td>Быстрый переключатель RT-подобного освещения прямо из тулбара.</td></tr>
+            <tr><td><code>Follow Player</code></td><td>Заставляет камеру редактора следовать за объектом игрока в preview.</td></tr>
+            <tr><td><code>Mode</code></td><td>Выбор режима <code>Edit</code> или <code>Preview</code>.</td></tr>
+            <tr><td><code>Snap To Grid</code></td><td>Включает привязку координат к сетке.</td></tr>
+            <tr><td><code>Render Size</code></td><td>Выбирает размер рендера/внутреннее разрешение viewport.</td></tr>
+            <tr><td><code>Save All</code></td><td>Быстрое сохранение без захода в меню.</td></tr>
+            <tr><td><code>Build Package</code></td><td>Экспорт игры.</td></tr>
+            <tr><td><code>Build And Run</code></td><td>Сборка и запуск рантайма одним действием.</td></tr>
+            <tr><td><code>AI Builder</code></td><td>Открывает окно генератора уровня из уже импортированных ассетов.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="viewport" data-search>
+        <h2>7. Viewport</h2>
+        <p>
+          Viewport показывает текущую сцену. Здесь же происходит перетаскивание сущностей, ручное размещение контента
+          и большинство быстрых операций над объектами. В оверлее сверху выводятся служебные подсказки, а также счётчик анимаций.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h3>Что можно делать мышью</h3>
+            <ul>
+              <li><strong>ЛКМ:</strong> выбрать объект, триггер, свет, аудиоисточник или другой элемент сцены.</li>
+              <li><strong>Перетаскивание:</strong> перемещение выделенного элемента.</li>
+              <li><strong>ПКМ:</strong> вызвать контекстное меню под курсором.</li>
+              <li><strong>Средняя кнопка:</strong> панорама камеры viewport.</li>
+              <li><strong>Колесо:</strong> масштаб viewport.</li>
+              <li><strong>Alt + drag:</strong> растягивание размеров для сущностей и trigger zone.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Что показывает оверлей</h3>
+            <ul>
+              <li>подсказки по управлению камерой и объектами;</li>
+              <li>состояние preview/edit режима;</li>
+              <li>информацию по zoom и сетке;</li>
+              <li>счётчик анимаций: сколько объектов имеют анимацию и сколько анимируются прямо сейчас.</li>
+            </ul>
+          </div>
+        </div>
+        <h3>Контекстное меню viewport</h3>
+        <table>
+          <thead><tr><th>Пункт</th><th>Назначение</th></tr></thead>
+          <tbody>
+            <tr><td><code>Delete</code></td><td>Удаляет выбранный объект со сцены.</td></tr>
+            <tr><td><code>Duplicate</code></td><td>Дублирует выбранный элемент.</td></tr>
+            <tr><td><code>Properties</code></td><td>Переводит фокус к окну свойств.</td></tr>
+            <tr><td><code>Open Graph Editor</code></td><td>Открывает trigger graph, если под курсором триггер.</td></tr>
+            <tr><td><code>Move Layer Up / Down</code></td><td>Меняет слой объекта.</td></tr>
+          </tbody>
+        </table>
+        <div class="note">
+          В актуальной версии приоритет выбора под курсором должен сначала учитывать trigger zone, lights и audio,
+          а потом уже обычные картинки и entities. Это сделано, чтобы служебные объекты можно было брать даже поверх спрайтов.
+        </div>
+      </section>
+
+      <section id="hierarchy" data-search>
+        <h2>8. Hierarchy</h2>
+        <p>
+          Hierarchy отображает сцену списком. Здесь ты быстро создаёшь сущности, группируешь их и переключаешься по объектам.
+          Дерево полезно, когда сцена плотная и кликать во viewport неудобно.
+        </p>
+        <table>
+          <thead><tr><th>Кнопка / действие</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Add Entity</code></td><td>Создаёт пустую игровую сущность.</td></tr>
+            <tr><td><code>Add Trigger</code></td><td>Создаёт trigger zone.</td></tr>
+            <tr><td><code>Add Parallax</code></td><td>Создаёт слой параллакса.</td></tr>
+            <tr><td><code>Add Light</code></td><td>Добавляет источник света.</td></tr>
+            <tr><td><code>Add Audio</code></td><td>Добавляет одиночный audio source.</td></tr>
+            <tr><td><code>Add Audio Pak</code></td><td>Создаёт playlist-источник с несколькими дорожками.</td></tr>
+            <tr><td><code>Add Camera</code></td><td>Создаёт virtual camera с областью захвата и follow-параметрами.</td></tr>
+            <tr><td><code>Add Animation</code></td><td>Создаёт scene animation, которую можно запускать автоматически, триггером или из Python.</td></tr>
+          </tbody>
+        </table>
+        <h3>Контекстное меню объекта в Hierarchy</h3>
+        <table>
+          <thead><tr><th>Пункт</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Delete</code></td><td>Удаляет элемент.</td></tr>
+            <tr><td><code>Duplicate</code></td><td>Создаёт копию.</td></tr>
+            <tr><td><code>Rename</code></td><td>Переименовывает id или display name.</td></tr>
+            <tr><td><code>Open Graph Editor</code></td><td>Открывает редактор триггера для выбранной зоны.</td></tr>
+            <tr><td><code>Open Animation Editor</code></td><td>Открывает редактор кривых для выбранного animation resource или scene animation.</td></tr>
+            <tr><td><code>Combine</code></td><td>Используется для операций объединения там, где поддержано типом объекта.</td></tr>
+          </tbody>
+        </table>
+        <div class="good">
+          Для организации сцены у большинства сущностей есть поле <code>Group</code> или <code>editor_group</code>.
+          Через него удобно собирать логические наборы: декор, враги, двери, музыка, свет и так далее.
+        </div>
+      </section>
+
+      <section id="layers" data-search>
+        <h2>9. Layers</h2>
+        <p>
+          Окно Layers управляет порядком рендера и логической глубиной объектов. Здесь отдельно выделены фоновые слои,
+          gameplay-сущности и блок света/аудио.
+        </p>
+        <table>
+          <thead><tr><th>Раздел</th><th>Что хранит</th></tr></thead>
+          <tbody>
+            <tr><td><code>Background / Parallax</code></td><td>Параллакс-слои и фоновые элементы.</td></tr>
+            <tr><td><code>Gameplay Layers</code></td><td>Игровые объекты, персонажи, интерактивные сущности.</td></tr>
+            <tr><td><code>Lights / Audio</code></td><td>Источники света, аудиоисточники и audio pak.</td></tr>
+          </tbody>
+        </table>
+        <p>
+          Слои можно менять перетаскиванием. Это влияет на порядок отображения и на то, какой объект окажется сверху при одинаковых координатах.
+        </p>
+      </section>
+
+      <section id="properties" data-search>
+        <h2>10. Properties</h2>
+        <p>
+          Properties показывает параметры того, что сейчас выделено. Набор полей зависит от типа объекта. Ниже перечислены ключевые группы.
+        </p>
+        <h3>Если выбрана Entity</h3>
+        <div class="pill-list">
+          <span class="pill">Id</span>
+          <span class="pill">Group</span>
+          <span class="pill">Archetype</span>
+          <span class="pill">Object Asset</span>
+          <span class="pill">Sprite Asset</span>
+          <span class="pill">Animation</span>
+          <span class="pill">Position</span>
+          <span class="pill">Size</span>
+          <span class="pill">Velocity</span>
+          <span class="pill">Tint</span>
+          <span class="pill">Texture</span>
+          <span class="pill">Sound</span>
+          <span class="pill">UV</span>
+          <span class="pill">Layer</span>
+          <span class="pill">Dynamic</span>
+          <span class="pill">Collidable</span>
+          <span class="pill">Visible</span>
+          <span class="pill">Reflection</span>
+          <span class="pill">Pseudo 3D</span>
+          <span class="pill">Pseudo 3D Height</span>
+          <span class="pill">Collider Offset</span>
+          <span class="pill">Collider Size</span>
+          <span class="pill">Animation Speed</span>
+          <span class="pill">Script</span>
+          <span class="pill">Trigger Hook</span>
+          <span class="pill">Attach To</span>
+          <span class="pill">Attach Offset</span>
+        </div>
+        <h3>Если выбрана Trigger Zone</h3>
+        <div class="pill-list">
+          <span class="pill">Id</span>
+          <span class="pill">Name</span>
+          <span class="pill">Group</span>
+          <span class="pill">Trigger Asset</span>
+          <span class="pill">Position</span>
+          <span class="pill">Size</span>
+          <span class="pill">Color</span>
+          <span class="pill">Once</span>
+          <span class="pill">Enabled</span>
+        </div>
+        <h3>Если выбран Parallax</h3>
+        <div class="pill-list">
+          <span class="pill">Texture</span>
+          <span class="pill">Speed</span>
+          <span class="pill">Parallax Speed</span>
+          <span class="pill">Scale</span>
+          <span class="pill">Offset</span>
+          <span class="pill">Tint</span>
+          <span class="pill">Depth</span>
+          <span class="pill">Zoom Factor</span>
+          <span class="pill">Repeat</span>
+          <span class="pill">Visible</span>
+        </div>
+        <h3>Если выбран Light</h3>
+        <div class="pill-list">
+          <span class="pill">Id</span>
+          <span class="pill">Name</span>
+          <span class="pill">Group</span>
+          <span class="pill">Position</span>
+          <span class="pill">Radius</span>
+          <span class="pill">Source Radius</span>
+          <span class="pill">Scatter</span>
+          <span class="pill">Color</span>
+          <span class="pill">Intensity</span>
+          <span class="pill">Enabled</span>
+          <span class="pill">Attach To</span>
+          <span class="pill">Attach Offset</span>
+        </div>
+        <h3>Если выбрана Virtual Camera</h3>
+        <div class="pill-list">
+          <span class="pill">Id</span>
+          <span class="pill">Name</span>
+          <span class="pill">Group</span>
+          <span class="pill">Position</span>
+          <span class="pill">Size</span>
+          <span class="pill">Follow Target</span>
+          <span class="pill">Follow Offset</span>
+          <span class="pill">Dead Zone</span>
+          <span class="pill">Zoom</span>
+          <span class="pill">Follow Lag</span>
+          <span class="pill">Zoom Lag</span>
+          <span class="pill">Enabled</span>
+          <span class="pill">Auto Activate</span>
+          <span class="pill">Release On Exit</span>
+          <span class="pill">Override Mode</span>
+          <span class="pill">Camera Mode</span>
+          <span class="pill">Pseudo 3D Enabled</span>
+          <span class="pill">Pseudo 3D Offset</span>
+          <span class="pill">Pseudo 3D Top Tint</span>
+          <span class="pill">Pseudo 3D Side Tint</span>
+        </div>
+        <h3>Если выбрана Scene Animation</h3>
+        <div class="pill-list">
+          <span class="pill">Id</span>
+          <span class="pill">Name</span>
+          <span class="pill">Group</span>
+          <span class="pill">Animation Asset</span>
+          <span class="pill">Target Entity</span>
+          <span class="pill">Enabled</span>
+          <span class="pill">Play On Start</span>
+          <span class="pill">Loop</span>
+          <span class="pill">Speed</span>
+        </div>
+        <h3>Если выбран Audio Source</h3>
+        <div class="pill-list">
+          <span class="pill">Audio</span>
+          <span class="pill">Position</span>
+          <span class="pill">Enabled</span>
+          <span class="pill">Always</span>
+          <span class="pill">Loop</span>
+          <span class="pill">Radius</span>
+          <span class="pill">Stop On Exit</span>
+          <span class="pill">Distance</span>
+          <span class="pill">Volume</span>
+        </div>
+        <h3>Если выбран Audio Pak</h3>
+        <div class="pill-list">
+          <span class="pill">Enabled</span>
+          <span class="pill">Always</span>
+          <span class="pill">Loop Current</span>
+          <span class="pill">Radius</span>
+          <span class="pill">Stop On Exit</span>
+          <span class="pill">Distance</span>
+          <span class="pill">Volume</span>
+          <span class="pill">Shuffle</span>
+          <span class="pill">Repeat Playlist</span>
+          <span class="pill">Tracks</span>
+        </div>
+        <h3>Если ничего не выбрано</h3>
+        <table>
+          <thead><tr><th>Параметр сцены</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Level Name</code></td><td>Имя текущего уровня.</td></tr>
+            <tr><td><code>Player Spawn</code></td><td>Точка появления игрока.</td></tr>
+            <tr><td><code>Background Color</code></td><td>Цвет фона.</td></tr>
+            <tr><td><code>Lighting Enabled</code></td><td>Включает систему освещения сцены.</td></tr>
+            <tr><td><code>RT Lights</code></td><td>Включает режим RT-подобного освещения. Этот же переключатель продублирован в тулбаре.</td></tr>
+            <tr><td><code>Ambient Color</code></td><td>Цвет ambient-подсветки.</td></tr>
+            <tr><td><code>Ambient Intensity</code></td><td>Сила ambient света.</td></tr>
+            <tr><td><code>Add Scene Light</code></td><td>Добавляет источник света в сцену.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="triggers" data-search>
+        <h2>11. Trigger Editor</h2>
+        <p>
+          Trigger Editor открывает граф логики для trigger zone или trigger resource. Логика строится из condition node и action node.
+          Это основной визуальный инструмент для безскриптовой событийной системы.
+        </p>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Add Condition Node</code></td><td>Добавляет проверку, которая должна вернуть <code>true/false</code>.</td></tr>
+            <tr><td><code>Add Action Node</code></td><td>Добавляет действие, исполняемое после успешных условий.</td></tr>
+            <tr><td><code>Custom Script</code></td><td>Позволяет указать Python-функцию вместо встроенной логики.</td></tr>
+            <tr><td><code>Advanced List View</code></td><td>Показывает структуру триггера списком вместо свободного графа.</td></tr>
+            <tr><td><code>Save Trigger To Level</code></td><td>Записывает trigger graph прямо в текущий <code>.niso</code>.</td></tr>
+            <tr><td><code>Save All</code></td><td>Сохраняет все изменения графа и связанных данных.</td></tr>
+          </tbody>
+        </table>
+        <div class="note">
+          Если у action есть аргумент <code>delay</code> внутри JSON, действие не сработает мгновенно, а будет поставлено в очередь выполнения.
+        </div>
+      </section>
+
+      <section id="browser" data-search>
+        <h2>12. Asset Browser</h2>
+        <p>
+          Asset Browser показывает файлы проекта и умеет импортировать контент. Здесь же находятся встроенные инструменты для быстрого создания игровых ресурсов.
+        </p>
+        <h3>Кнопка <code>+</code></h3>
+        <table>
+          <thead><tr><th>Команда</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Import Image</code></td><td>Импортирует текстуру в <code>assets/images</code>.</td></tr>
+            <tr><td><code>Import Audio</code></td><td>Импортирует аудиофайл в <code>assets/audio</code>.</td></tr>
+            <tr><td><code>Import Script</code></td><td>Импортирует Python-скрипт в <code>scripts</code>.</td></tr>
+            <tr><td><code>Import Shader</code></td><td>Кладёт шейдер в папку <code>shaders</code>.</td></tr>
+            <tr><td><code>New Sprite</code></td><td>Создаёт новый спрайтовый ресурс <code>.nsprite</code>.</td></tr>
+            <tr><td><code>New Object</code></td><td>Создаёт объектный ресурс <code>.nobject</code>.</td></tr>
+            <tr><td><code>New Animation Resource</code></td><td>Создаёт новый ресурс анимации <code>.nanim</code>.</td></tr>
+            <tr><td><code>New Trigger</code></td><td>Создаёт триггерный ресурс <code>.ntrigger</code>.</td></tr>
+          </tbody>
+        </table>
+        <h3>Built-In Tools</h3>
+        <table>
+          <thead><tr><th>Инструмент</th><th>Назначение</th></tr></thead>
+          <tbody>
+            <tr><td><code>LAMP</code></td><td>Быстрое добавление источника света.</td></tr>
+            <tr><td><code>AUDIO PAK</code></td><td>Создаёт playlist-источник из набора аудиофайлов.</td></tr>
+          </tbody>
+        </table>
+        <h3>Разделы браузера</h3>
+        <div class="pill-list">
+          <span class="pill">Images</span>
+          <span class="pill">Audio</span>
+          <span class="pill">Scripts</span>
+          <span class="pill">Levels</span>
+          <span class="pill">Project Files</span>
+          <span class="pill">Localization</span>
+          <span class="pill">Shaders</span>
+          <span class="pill">HTML UI</span>
+          <span class="pill">Sprite Resources</span>
+          <span class="pill">Object Resources</span>
+          <span class="pill">Animation Resources</span>
+          <span class="pill">Trigger Resources</span>
+        </div>
+        <h3>Контекстное меню карточки файла</h3>
+        <table>
+          <thead><tr><th>Пункт</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Open In Code Editor</code></td><td>Открывает текстовый файл во встроенном редакторе кода.</td></tr>
+            <tr><td><code>Place In Viewport</code></td><td>Если тип поддержан, ставит ресурс в сцену.</td></tr>
+            <tr><td><code>Delete File</code></td><td>Удаляет файл из проекта.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="inspector" data-search>
+        <h2>13. Resource Inspector</h2>
+        <p>
+          Resource Inspector редактирует содержимое выбранного файла ресурса. Поведение зависит от типа ресурса.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <h3>Изображение</h3>
+            <ul>
+              <li><code>Create Sprite Resource</code> создаёт <code>.nsprite</code> по текстуре.</li>
+              <li><code>Create Object Resource</code> создаёт <code>.nobject</code>.</li>
+              <li><code>Place In Viewport</code> ставит картинку или объект в сцену.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Аудио</h3>
+            <ul>
+              <li><code>Play</code> воспроизводит один раз.</li>
+              <li><code>Play Loop</code> запускает по кругу.</li>
+              <li><code>Loop</code> переключает флаг цикличности.</li>
+              <li><code>Stop</code> останавливает проигрывание.</li>
+              <li><code>Place Audio Source</code> создаёт источник в сцене.</li>
+            </ul>
+          </div>
+        </div>
+        <p>
+          Для <code>.nsprite</code>, <code>.nobject</code>, <code>.nanim</code> и <code>.ntrigger</code> инспектор показывает редактируемые поля,
+          кнопку сохранения и команду <code>Rename File From Resource Name</code>.
+        </p>
+        <div class="note">
+          У object resource есть preset combo со значениями <code>none</code>, <code>player</code>, <code>enemy</code>,
+          <code>friend</code>, <code>vendor</code>, <code>storage</code>. При выборе пресета редактор может подставить стандартный скрипт.
+          В object resource также сохраняются material-like параметры вроде <code>Reflection</code>, <code>Pseudo 3D</code> и <code>Pseudo 3D Height</code>.
+        </div>
+      </section>
+
+      <section id="project-settings" data-search>
+        <h2>14. Project Settings</h2>
+        <p>
+          Здесь задаются глобальные свойства игры, путь экспорта и графические атрибуты вроде иконки и splash screen.
+        </p>
+        <table>
+          <thead><tr><th>Поле</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Name</code></td><td>Название игры/проекта.</td></tr>
+            <tr><td><code>Developer</code></td><td>Имя разработчика или студии.</td></tr>
+            <tr><td><code>Version</code></td><td>Версия проекта.</td></tr>
+            <tr><td><code>Icon</code></td><td>Файл иконки приложения.</td></tr>
+            <tr><td><code>Preview Image</code></td><td>Превью-картинка проекта.</td></tr>
+            <tr><td><code>Splash Enabled</code></td><td>Разрешает показ splash screen перед главным меню.</td></tr>
+            <tr><td><code>Splash Image</code></td><td>Картинка splash screen.</td></tr>
+            <tr><td><code>Export Directory</code></td><td>Куда собирать пакет игры.</td></tr>
+            <tr><td><code>Use Selected Image As Icon/Preview/Splash</code></td><td>Берёт текущую выделенную текстуру из браузера и ставит в нужное поле.</td></tr>
+            <tr><td><code>Default Language</code></td><td>Язык рантайма/проекта по умолчанию.</td></tr>
+            <tr><td><code>Editor Language</code></td><td>Язык интерфейса редактора.</td></tr>
+            <tr><td><code>Save Project Settings</code></td><td>Сохраняет <code>project.json</code>.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="menu-designer" data-search>
+        <h2>15. Menu Designer</h2>
+        <p>
+          Menu Designer отвечает за legacy-меню движка. Если HTML UI отключён, рантайм показывает именно эти экраны.
+          Дизайн можно настроить отдельно для <code>Main Menu</code> и <code>Pause Menu</code>.
+        </p>
+        <table>
+          <thead><tr><th>Параметр</th><th>Назначение</th></tr></thead>
+          <tbody>
+            <tr><td><code>Target</code></td><td>Выбор редактируемого меню: главное или пауза.</td></tr>
+            <tr><td><code>Enabled</code></td><td>Включает показ меню в рантайме.</td></tr>
+            <tr><td><code>Title</code>, <code>Subtitle</code></td><td>Текст заголовка и подзаголовка.</td></tr>
+            <tr><td><code>Screen Position</code></td><td>Позиция панели на экране.</td></tr>
+            <tr><td><code>Panel Size</code></td><td>Размер панели меню.</td></tr>
+            <tr><td><code>Background</code>, <code>Accent</code></td><td>Основные цвета панели.</td></tr>
+            <tr><td><code>Title Color</code>, <code>Subtitle Color</code></td><td>Цвет текста.</td></tr>
+            <tr><td><code>Roundness</code></td><td>Скругление углов.</td></tr>
+            <tr><td><code>Spacing</code></td><td>Вертикальный отступ между элементами.</td></tr>
+            <tr><td><code>Background Music</code></td><td>Музыка для этого экрана.</td></tr>
+            <tr><td><code>Music Loop</code></td><td>Зацикливать музыку меню.</td></tr>
+            <tr><td><code>Add Button</code></td><td>Добавляет пункт меню.</td></tr>
+          </tbody>
+        </table>
+        <h3>Параметры кнопки меню</h3>
+        <div class="pill-list">
+          <span class="pill">Label</span>
+          <span class="pill">Action</span>
+          <span class="pill">Target</span>
+          <span class="pill">Size</span>
+          <span class="pill">Color</span>
+          <span class="pill">Hover</span>
+          <span class="pill">Text Color</span>
+          <span class="pill">Enabled</span>
+          <span class="pill">Remove Button</span>
+        </div>
+        <h3>Встроенные menu actions</h3>
+        <pre><code>start_game
+resume_game
+restart_level
+open_main_menu
+toggle_camera_mode
+quit_game</code></pre>
+      </section>
+
+      <section id="ui-editor" data-search>
+        <h2>16. UI Editor</h2>
+        <p>
+          UI Editor связывает проект с HTML/CSS/JS интерфейсом. Когда HTML UI включён, рантайм пытается использовать файлы из папки <code>ui</code>.
+          Если нужного экрана нет, движок может перейти на legacy widgets.
+        </p>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>HTML UI Enabled</code></td><td>Включает HTML UI runtime.</td></tr>
+            <tr><td><code>HTML File</code></td><td>Путь к <code>index.html</code>.</td></tr>
+            <tr><td><code>CSS File</code></td><td>Путь к <code>styles.css</code>.</td></tr>
+            <tr><td><code>JS File</code></td><td>Путь к <code>app.js</code>.</td></tr>
+            <tr><td><code>Create HTML UI Template</code></td><td>Создаёт базовые файлы UI с тремя экранами.</td></tr>
+            <tr><td><code>Open HTML</code></td><td>Открывает HTML во встроенном редакторе.</td></tr>
+            <tr><td><code>Open CSS</code></td><td>Открывает CSS.</td></tr>
+            <tr><td><code>Open JS</code></td><td>Открывает JS.</td></tr>
+            <tr><td><code>Legacy Widget Overlay</code></td><td>Наследуемый слой UI-виджетов на случай отсутствия HTML-экрана.</td></tr>
+            <tr><td><code>Add Widget</code></td><td>Добавляет legacy widget.</td></tr>
+            <tr><td><code>Remove Widget</code></td><td>Удаляет виджет.</td></tr>
+          </tbody>
+        </table>
+        <div class="warning">
+          Поддерживаются только экраны с id <code>main-menu</code>, <code>pause-menu</code> и <code>hud</code>.
+          Остальные контейнеры не будут автоматически вызываться рантаймом, пока для них не добавить отдельную логику.
+        </div>
+      </section>
+
+      <section id="shader-stack" data-search>
+        <h2>17. Shader Stack</h2>
+        <p>
+          Shader Stack управляет постобработкой. Редактор сканирует папку <code>shaders</code> и выводит все <code>.frag</code>,
+          кроме внутренних служебных шейдеров вроде <code>copy</code>, <code>sprite</code>, <code>light</code>, <code>post</code> и других engine-only проходов.
+        </p>
+        <table>
+          <thead><tr><th>Элемент</th><th>Назначение</th></tr></thead>
+          <tbody>
+            <tr><td><code>RT Enable</code></td><td>Переключает RT lighting для сцены.</td></tr>
+            <tr><td>Список шейдеров</td><td>Включает и отключает отдельные постэффекты.</td></tr>
+            <tr><td><code>Current Order</code></td><td>Показывает текущий стек применяемых эффектов в порядке исполнения.</td></tr>
+            <tr><td><code>Shader Designer</code></td><td>Встроенный конструктор постэффектов с генерацией <code>.nshader</code> и <code>.frag</code>.</td></tr>
+          </tbody>
+        </table>
+        <h3>Shader Designer</h3>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>New Preset</code></td><td>Сбрасывает текущий шаблон эффекта.</td></tr>
+            <tr><td><code>Load Selected Preset</code></td><td>Загружает выделенный <code>.nshader</code> из Content Browser.</td></tr>
+            <tr><td><code>Save Preset</code></td><td>Сохраняет описание эффекта в <code>shaders/designer</code>.</td></tr>
+            <tr><td><code>Generate Shader</code></td><td>Создаёт готовый <code>.frag</code> в <code>shaders</code> и может сразу включить его в уровень.</td></tr>
+            <tr><td><code>Open Generated File</code></td><td>Открывает сгенерированный GLSL во встроенном редакторе.</td></tr>
+            <tr><td><code>Enabled In Current Level</code></td><td>Добавляет или убирает эффект из постстека текущей сцены.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="audio-mixer" data-search>
+        <h2>18. Audio Mixer</h2>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Master</code></td><td>Общая громкость проекта.</td></tr>
+            <tr><td><code>Music</code></td><td>Громкость музыки.</td></tr>
+            <tr><td><code>Sound FX</code></td><td>Громкость эффектов и кратких звуков.</td></tr>
+            <tr><td><code>Stop All Audio</code></td><td>Мгновенно глушит все активные дорожки.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="code-editor" data-search>
+        <h2>19. Code Editor</h2>
+        <p>
+          Встроенный code editor нужен для Python-скриптов, локализации, HTML UI и любых текстовых файлов проекта.
+        </p>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>File Path</code></td><td>Путь к открытому файлу.</td></tr>
+            <tr><td><code>Load</code></td><td>Загружает файл с диска в редактор.</td></tr>
+            <tr><td><code>Save File</code></td><td>Сохраняет изменения.</td></tr>
+            <tr><td>Drag-and-drop ресурса</td><td>Вставляет путь к файлу в текст редактора.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="sprite-editor" data-search>
+        <h2>20. Sprite Editor</h2>
+        <p>
+          Sprite Editor служит для покадровой анимации и простого pixel-art редактирования.
+        </p>
+        <table>
+          <thead><tr><th>Элемент</th><th>Назначение</th></tr></thead>
+          <tbody>
+            <tr><td><code>Canvas Size</code></td><td>Размер холста кадра.</td></tr>
+            <tr><td><code>Import Image Into Frame</code></td><td>Загружает картинку в текущий кадр.</td></tr>
+            <tr><td><code>Use Selected Image</code></td><td>Берёт выделенную текстуру из браузера.</td></tr>
+            <tr><td><code>Save Resource</code></td><td>Сохраняет спрайтовый ресурс.</td></tr>
+            <tr><td><code>Rename File From Resource Name</code></td><td>Переименовывает файл по имени ресурса.</td></tr>
+            <tr><td><code>Animation</code></td><td>Выбор анимации внутри ресурса.</td></tr>
+            <tr><td><code>Add Animation</code></td><td>Создаёт новую анимацию.</td></tr>
+            <tr><td><code>Remove Animation</code></td><td>Удаляет текущую анимацию.</td></tr>
+            <tr><td><code>Loop</code></td><td>Зацикливание анимации.</td></tr>
+            <tr><td><code>Frame</code></td><td>Выбор кадра.</td></tr>
+            <tr><td><code>Add Frame</code></td><td>Добавляет новый кадр.</td></tr>
+            <tr><td><code>Remove Frame</code></td><td>Удаляет кадр.</td></tr>
+            <tr><td><code>Frame Duration</code></td><td>Длительность показа кадра.</td></tr>
+            <tr><td><code>Brush</code>, <code>Erase</code>, <code>Picker</code></td><td>Инструменты рисования.</td></tr>
+            <tr><td><code>Reload Frame Canvas</code></td><td>Перечитывает кадр с диска.</td></tr>
+            <tr><td><code>Save Frame Canvas</code></td><td>Сохраняет отрисованный кадр.</td></tr>
+            <tr><td><code>Convert To Editable TGA</code></td><td>Подготавливает изображение к редактированию в холсте.</td></tr>
+            <tr><td><code>Paint Color</code></td><td>Текущий цвет кисти.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="logs-history" data-search>
+        <h2>21. Output и History</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Output</h3>
+            <p>Показывает сообщения редактора, ошибки, предупреждения и служебные события сборки.</p>
+          </div>
+          <div class="card">
+            <h3>History</h3>
+            <p>Показывает историю действий пользователя. Полезно для отслеживания цепочки изменений во время редактирования сцены.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="runtime" data-search>
+        <h2>22. Рантайм и HUD</h2>
+        <p>
+          Рантайм загружает проект, splash screen, главное меню, текущий уровень и внутриигровой интерфейс.
+          Если у проекта включён HTML UI, рантайм пытается использовать HTML-экраны. Иначе он падает обратно на legacy menu/HUD.
+        </p>
+        <table>
+          <thead><tr><th>Событие</th><th>Что происходит</th></tr></thead>
+          <tbody>
+            <tr><td>Старт игры</td><td>Инициализируется проект, затем splash, затем главное меню, если оно включено.</td></tr>
+            <tr><td><code>Esc</code> в главном меню</td><td>Выход из игры.</td></tr>
+            <tr><td><code>Esc</code> во время игры</td><td>Открывает паузу, если она включена, иначе закрывает рантайм.</td></tr>
+            <tr><td><code>Tab</code></td><td>Переключает camera mode в рантайме.</td></tr>
+            <tr><td><code>F11</code></td><td>Переключает полноэкранный режим.</td></tr>
+          </tbody>
+        </table>
+        <h3>Встроенные UI actions рантайма</h3>
+        <pre><code>start_game
+resume_game
+restart_level
+open_main_menu
+toggle_camera_mode
+quit_game</code></pre>
+        <h3>Контекстные переменные UI</h3>
+        <pre><code>engine.project
+engine.version
+engine.level
+engine.camera_mode
+engine.paused
+engine.fullscreen
+engine.time
+engine.window_width
+engine.window_height
+ui.current_screen</code></pre>
+      </section>
+
+      <section id="trigger-api" data-search>
+        <h2>23. Условия и действия триггеров</h2>
+        <p>
+          Встроенная система триггеров состоит из condition и action. Condition возвращает логический результат,
+          action исполняет изменение состояния сцены, аудио, света, камеры или объектов.
+        </p>
+        <h3>Встроенные условия</h3>
+        <pre><code>always_true
+require_side
+require_iso
+light_enabled
+entity_active
+entity_visible
+audio_source_enabled
+audio_pak_enabled
+random_chance
+time_since_start
+cooldown_ready</code></pre>
+        <h3>Встроенные действия</h3>
+<pre><code>toggle_camera
+set_camera_mode
+set_camera_zoom
+set_camera_follow
+activate_virtual_camera
+release_virtual_camera
+play_scene_animation
+stop_scene_animation
+log_message
+play_sound
+play_music
+stop_audio
+set_entity_visible
+set_entity_active
+delete_entity
+set_light_enabled
+set_audio_source_enabled
+set_audio_pak_enabled
+set_trigger_enabled
+set_music_volume
+set_sound_volume</code></pre>
+        <div class="note">
+          Для custom logic condition и action могут вызывать Python-функции. Аргументы передаются JSON-строкой, поэтому
+          один и тот же скрипт можно переиспользовать под несколько триггеров с разными параметрами.
+        </div>
+      </section>
+
+      <section id="python-api" data-search>
+        <h2>24. Python API</h2>
+        <p>
+          Скрипты в движке исполняются через Python и получают доступ к двум главным объектам: <code>entity</code> и <code>scene</code>.
+          Движок вызывает специальные hook-функции автоматически.
+        </p>
+        <h3>Жизненный цикл скрипта</h3>
+        <pre><code>def on_spawn(entity, scene):
+    pass
+
+def on_update(entity, scene, dt):
+    pass
+
+def on_trigger(entity, scene, trigger_name):
+    pass</code></pre>
+        <h3>Методы EntityHandle</h3>
+        <table>
+          <thead><tr><th>Метод</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>valid()</code></td><td>Проверяет, существует ли объект.</td></tr>
+            <tr><td><code>id()</code></td><td>Возвращает строковый id.</td></tr>
+            <tr><td><code>position()</code></td><td>Текущая позиция.</td></tr>
+            <tr><td><code>velocity()</code></td><td>Текущая скорость.</td></tr>
+            <tr><td><code>grounded()</code></td><td>Стоит ли объект на поверхности.</td></tr>
+            <tr><td><code>set_position(x, y)</code></td><td>Жёстко ставит координаты.</td></tr>
+            <tr><td><code>move(dx, dy)</code></td><td>Сдвигает на заданный вектор.</td></tr>
+            <tr><td><code>set_velocity(x, y)</code></td><td>Меняет скорость.</td></tr>
+            <tr><td><code>set_tint(r, g, b, a)</code></td><td>Меняет цветовую тонировку.</td></tr>
+            <tr><td><code>set_active(flag)</code></td><td>Включает или отключает объект.</td></tr>
+            <tr><td><code>set_visible(flag)</code></td><td>Показывает или скрывает объект.</td></tr>
+            <tr><td><code>get_float / get_bool / get_string</code></td><td>Читает пользовательские свойства.</td></tr>
+            <tr><td><code>set_float / set_bool / set_string</code></td><td>Пишет пользовательские свойства.</td></tr>
+          </tbody>
+        </table>
+        <h3>Методы SceneHandle</h3>
+        <table>
+          <thead><tr><th>Метод</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>valid()</code></td><td>Проверка валидности сцены.</td></tr>
+            <tr><td><code>find_entity(id)</code></td><td>Возвращает объект по id.</td></tr>
+            <tr><td><code>action_down(name)</code></td><td>Проверяет состояние действия ввода, например <code>MoveLeft</code>.</td></tr>
+            <tr><td><code>camera_mode()</code></td><td>Читает текущий режим камеры.</td></tr>
+            <tr><td><code>toggle_camera_mode()</code></td><td>Переключает режим камеры.</td></tr>
+            <tr><td><code>set_camera_mode(mode)</code></td><td>Жёстко задаёт режим камеры.</td></tr>
+            <tr><td><code>camera_zoom()</code></td><td>Возвращает текущий zoom.</td></tr>
+            <tr><td><code>set_camera_zoom(value)</code></td><td>Мгновенно меняет zoom.</td></tr>
+            <tr><td><code>set_camera_zoom_smooth(value, speed)</code></td><td>Плавно меняет zoom с заданной скоростью.</td></tr>
+            <tr><td><code>set_camera_follow(flag)</code></td><td>Включает или выключает follow для игровой камеры.</td></tr>
+            <tr><td><code>activate_virtual_camera(id)</code></td><td>Активирует virtual camera по id или имени.</td></tr>
+            <tr><td><code>release_virtual_camera()</code></td><td>Возвращает обычное поведение камеры сцены.</td></tr>
+            <tr><td><code>play_scene_animation(id, restart=True)</code></td><td>Запускает scene animation по id или имени.</td></tr>
+            <tr><td><code>stop_scene_animation(id, restore_state=True)</code></td><td>Останавливает scene animation и при необходимости возвращает исходное состояние.</td></tr>
+            <tr><td><code>log(text)</code></td><td>Пишет сообщение в лог.</td></tr>
+            <tr><td><code>play_sound(path)</code></td><td>Запускает короткий звук.</td></tr>
+            <tr><td><code>play_music(path)</code></td><td>Запускает музыку.</td></tr>
+            <tr><td><code>stop_all_audio()</code></td><td>Останавливает все активные треки.</td></tr>
+            <tr><td><code>light_enabled(id)</code></td><td>Проверяет состояние света.</td></tr>
+            <tr><td><code>set_light_enabled(id, flag)</code></td><td>Включает или выключает источник света.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="script-examples" data-search>
+        <h2>25. Примеры скриптов</h2>
+        <p>
+          Ниже даны рабочие паттерны, совпадающие с тем, как движок реально вызывает Python-логику.
+        </p>
+        <h3>Штатные preset-скрипты, которые редактор умеет создать сам</h3>
+        <table>
+          <thead><tr><th>Файл</th><th>Обычно используется для</th></tr></thead>
+          <tbody>
+            <tr><td><code>scripts/preset_player.py</code></td><td>Базовая логика игрока.</td></tr>
+            <tr><td><code>scripts/preset_enemy.py</code></td><td>Враг или агрессивный NPC.</td></tr>
+            <tr><td><code>scripts/preset_friend.py</code></td><td>Дружественный NPC.</td></tr>
+            <tr><td><code>scripts/preset_vendor.py</code></td><td>Торговец или персонаж-диалог.</td></tr>
+            <tr><td><code>scripts/preset_storage.py</code></td><td>Контейнер, сундук, шкаф, хранилище.</td></tr>
+          </tbody>
+        </table>
+        <h3>Пример 1. Игрок, движение и прыжок</h3>
+        <pre><code>def on_spawn(entity, scene):
+    scene.log("Игрок появился")
+    scene.play_music("assets/audio/theme.ogg")
+
+def on_update(entity, scene, dt):
+    speed = 150.0
+    vx, vy = entity.velocity()
+
+    if scene.action_down("MoveLeft"):
+        vx = -speed
+    elif scene.action_down("MoveRight"):
+        vx = speed
+    else:
+        vx = 0.0
+
+    if scene.action_down("Jump") and entity.grounded():
+        vy = -260.0
+
+    entity.set_velocity(vx, vy)
+
+def on_trigger(entity, scene, trigger_name):
+    scene.log("Игрок вошёл в триггер: " + trigger_name)</code></pre>
+        <h3>Пример 2. Мерцание объекта через пользовательское свойство</h3>
+        <pre><code>def on_spawn(entity, scene):
+    entity.set_float("phase", 0.0)
+
+def on_update(entity, scene, dt):
+    phase = entity.get_float("phase")
+    phase += dt * 2.0
+    entity.set_float("phase", phase)
+
+    glow = 0.5 + 0.5 * __import__("math").sin(phase)
+    entity.set_tint(1.0, glow, glow, 1.0)</code></pre>
+        <h3>Пример 3. Custom condition для триггера</h3>
+        <pre><code>def require_side(scene, trigger_name, args_json):
+    return scene.camera_mode() == "side"</code></pre>
+        <h3>Пример 4. Custom action для триггера</h3>
+        <pre><code>import json
+
+def open_secret(scene, trigger_name, args_json):
+    args = json.loads(args_json or "{}")
+    entity_id = args.get("entity", "secret_door")
+    target = scene.find_entity(entity_id)
+    if target.valid():
+        target.set_visible(True)
+        target.set_active(True)
+        scene.log("Открыта секретная дверь: " + entity_id)</code></pre>
+        <h3>Пример 5. Катсцена: включить камеру и проиграть анимацию</h3>
+        <pre><code>def on_trigger(entity, scene, trigger_name):
+    if trigger_name != "intro_zone":
+        return
+
+    scene.activate_virtual_camera("intro_cam")
+    scene.set_camera_zoom_smooth(0.82, 3.5)
+    scene.play_scene_animation("door_intro", True)
+    scene.log("Запущена интро-сцена")</code></pre>
+      </section>
+
+      <section id="html-ui" data-search>
+        <h2>26. HTML UI</h2>
+        <p>
+          HTML UI в NovaIso-Engine работает на собственном парсере и рантайме, а не на Chromium/WebView.
+          Поэтому нужно знать, какие теги, стили и выражения реально поддерживаются.
+        </p>
+        <h3>Поддерживаемые теги</h3>
+        <pre><code>screen
+panel
+button
+widget
+title
+subtitle
+label
+text
+value</code></pre>
+        <h3>Поддерживаемые CSS-свойства</h3>
+        <pre><code>background
+accent
+color
+title-color
+subtitle-color
+hover-background
+width
+height
+padding
+gap
+radius / border-radius
+scale / font-scale
+anchor
+position
+size
+panel-size</code></pre>
+        <h3>Поддерживаемые селекторы</h3>
+        <ul>
+          <li>тег: <code>panel</code>, <code>button</code>;</li>
+          <li>класс: <code>.hero</code>;</li>
+          <li>id: <code>#main-menu</code>;</li>
+          <li>комбинации: <code>panel.hero</code>;</li>
+          <li><code>:root</code> с CSS-переменными <code>--accent</code> и использованием через <code>var(--accent)</code>.</li>
+        </ul>
+        <h3>Placeholder-подстановки</h3>
+        <pre><code>${ui.brand}
+${project}
+{{version}}
+{camera_mode}
+{entity:player:coins}</code></pre>
+        <p>Рантайм понимает форматы <code>${key}</code>, <code>{{key}}</code> и <code>{key}</code>.</p>
+        <h3>Минимальный пример <code>index.html</code></h3>
+        <pre><code>&lt;screen id="main-menu"&gt;
+  &lt;panel class="hero"&gt;
+    &lt;title&gt;${ui.brand}&lt;/title&gt;
+    &lt;subtitle&gt;${ui.tagline}&lt;/subtitle&gt;
+    &lt;button action="start_game"&gt;${ui.start_label}&lt;/button&gt;
+    &lt;button action="quit_game"&gt;${ui.quit_label}&lt;/button&gt;
+  &lt;/panel&gt;
+&lt;/screen&gt;
+
+&lt;screen id="pause-menu"&gt;
+  &lt;panel&gt;
+    &lt;title&gt;Пауза&lt;/title&gt;
+    &lt;button action="resume_game"&gt;Продолжить&lt;/button&gt;
+    &lt;button action="open_main_menu"&gt;В меню&lt;/button&gt;
+  &lt;/panel&gt;
+&lt;/screen&gt;
+
+&lt;screen id="hud"&gt;
+  &lt;panel class="hud"&gt;
+    &lt;label&gt;Проект&lt;/label&gt;
+    &lt;value&gt;${project}&lt;/value&gt;
+    &lt;label&gt;Камера&lt;/label&gt;
+    &lt;value&gt;${camera_mode}&lt;/value&gt;
+  &lt;/panel&gt;
+&lt;/screen&gt;</code></pre>
+        <h3>Минимальный пример <code>styles.css</code></h3>
+        <pre><code>:root {
+  --accent: #53b7ff;
+}
+
+screen {
+  width: 1.0;
+  height: 1.0;
+}
+
+panel {
+  background: rgba(10, 20, 35, 0.82);
+  color: #eaf4ff;
+  padding: 24;
+  gap: 12;
+  radius: 18;
+}
+
+panel.hero {
+  width: 520;
+  height: 360;
+  anchor: center;
+}
+
+button {
+  width: 280;
+  height: 48;
+  background: #2f70b4;
+  hover-background: #4f9ae7;
+}</code></pre>
+        <h3>Минимальный пример <code>app.js</code></h3>
+        <pre><code>window.ui = window.ui || {};
+window.ui.brand = "NovaFox";
+window.ui.tagline = "Изометрическое приключение";
+window.ui.start_label = "Начать";
+window.ui.quit_label = "Выход";</code></pre>
+        <div class="warning">
+          JS здесь не полноценный. В движке разбираются в основном простые присваивания вида <code>window.x = ...</code> и <code>ui.x = ...</code>.
+          DOM API, event listeners, fetch и браузерные библиотеки не поддерживаются.
+        </div>
+      </section>
+
+      <section id="new-systems" data-search>
+        <h2>27. Новые системы и workflow</h2>
+        <p>
+          Ниже собраны новые подсистемы, которые появились в движке после базовой версии мануала: virtual camera,
+          animation editor, AI Level Builder, RT-материалы и Shader Designer. Это краткая практическая карта, откуда
+          их открыть и какие параметры трогать в первую очередь.
+        </p>
+        <h3>Virtual Camera</h3>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>Add Camera</code> в Hierarchy</td><td>Создаёт новую virtual camera прямо в уровне.</td></tr>
+            <tr><td><code>Follow Target</code></td><td>Id сущности, за которой камера должна следить.</td></tr>
+            <tr><td><code>Dead Zone</code></td><td>Мёртвая зона внутри кадра, пока цель остаётся в ней.</td></tr>
+            <tr><td><code>Zoom</code>, <code>Follow Lag</code>, <code>Zoom Lag</code></td><td>Основные параметры крупности и плавности.</td></tr>
+            <tr><td><code>Auto Activate</code></td><td>Автоматически включает камеру, когда цель попадает в её область.</td></tr>
+            <tr><td><code>Release On Exit</code></td><td>Освобождает камеру, когда цель покидает её зону.</td></tr>
+            <tr><td><code>Preview This Camera</code></td><td>Временно включает выбранную камеру прямо в редакторе.</td></tr>
+            <tr><td><code>activate_virtual_camera</code></td><td>То же действие можно вызвать триггером или из Python.</td></tr>
+          </tbody>
+        </table>
+        <h3>Animation Editor и Scene Animation</h3>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>New Animation Resource</code></td><td>Создаёт ресурс <code>.nanim</code> в браузере.</td></tr>
+            <tr><td><code>Open Animation Editor</code></td><td>Открывает окно редактирования кривых и path.</td></tr>
+            <tr><td><code>Duration</code></td><td>Длина клипа в секундах.</td></tr>
+            <tr><td><code>Affect Position / Opacity / Scale / Rotation / Skew</code></td><td>Выбирает, какие каналы анимации реально влияют на объект.</td></tr>
+            <tr><td><code>Path Zoom</code></td><td>Масштаб холста кривой движения.</td></tr>
+            <tr><td><code>Opacity Keys</code>, <code>Scale Keys</code>, <code>Rotation Keys</code>, <code>Skew Keys</code></td><td>Ключи для fade, деформации и движения.</td></tr>
+            <tr><td><code>Add Animation</code> в Hierarchy</td><td>Создаёт scene animation, которую можно привязать к сущности.</td></tr>
+            <tr><td><code>Play On Start</code>, <code>Loop</code>, <code>Speed</code></td><td>Определяют поведение сценового экземпляра анимации.</td></tr>
+            <tr><td><code>play_scene_animation</code></td><td>Запуск сценовой анимации триггером или из Python.</td></tr>
+          </tbody>
+        </table>
+        <h3>AI Level Builder</h3>
+        <table>
+          <thead><tr><th>Элемент</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>AI Builder</code> в тулбаре</td><td>Открывает окно генератора уровня.</td></tr>
+            <tr><td><code>Prompt</code></td><td>Текстовая подсказка для жанра, атмосферы и состава сцены.</td></tr>
+            <tr><td><code>Width Tiles</code>, <code>Height Tiles</code>, <code>Seed</code></td><td>Базовая геометрия и воспроизводимость генерации.</td></tr>
+            <tr><td><code>Zone Count</code>, <code>Platform Density</code>, <code>Prop Density</code>, <code>Light Density</code></td><td>Управляют насыщенностью плана карты.</td></tr>
+            <tr><td><code>Richness</code>, <code>Verticality</code>, <code>Atmosphere</code></td><td>Определяют композицию, перепады высот и декоративную плотность.</td></tr>
+            <tr><td><code>Ambient Intensity</code>, <code>Light Radius Scale</code>, <code>Light Intensity Scale</code></td><td>Настройки глобального света и ламп, которые генератор поставит сам.</td></tr>
+            <tr><td><code>Camera Zoom</code>, <code>Camera Follow Lag</code>, <code>Camera Zoom Lag</code>, <code>Camera Dead Zone</code>, <code>Camera Overlap</code></td><td>Параметры камер, которые builder разложит по зонам.</td></tr>
+            <tr><td><code>Start AI Build</code></td><td>Запускает пошаговую сборку уровня на глазах в viewport.</td></tr>
+            <tr><td><code>Clear AI Generated</code></td><td>Удаляет всё, что builder сложил в группу <code>AI Generated</code>.</td></tr>
+          </tbody>
+        </table>
+        <h3>RT-материалы, свет и pseudo 3D</h3>
+        <table>
+          <thead><tr><th>Параметр</th><th>Для чего нужен</th></tr></thead>
+          <tbody>
+            <tr><td><code>Reflection</code></td><td>Коэффициент мокрого/глянцевого материала у entity или object asset. Чем выше значение, тем сильнее цветной блик от RT-ламп.</td></tr>
+            <tr><td><code>Source Radius</code></td><td>Размер источника света. Позволяет избежать игольчатой точки и сделать мягкий центр лампы.</td></tr>
+            <tr><td><code>Scatter</code></td><td>Рассеивание света и мягкость дальнего спада/теней.</td></tr>
+            <tr><td><code>Pseudo 3D</code></td><td>Флаг на объекте, разрешающий экструзию спрайта в псевдо-объём.</td></tr>
+            <tr><td><code>Pseudo 3D Height</code></td><td>Высота экструзии объекта в пикселях мира.</td></tr>
+            <tr><td><code>Pseudo 3D Enabled</code> у камеры</td><td>Камера включает объёмное отображение только для объектов с активным флагом <code>Pseudo 3D</code>.</td></tr>
+            <tr><td><code>RT Lights</code></td><td>Основной переключатель RT-подобного освещения. Есть и в Scene Settings, и в тулбаре.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="formats" data-search>
+        <h2>28. Форматы файлов</h2>
+        <table>
+          <thead><tr><th>Расширение</th><th>Для чего используется</th></tr></thead>
+          <tbody>
+            <tr><td><code>.niso</code></td><td>Уровень: entities, triggers, lights, audio, layers, постэффекты, сцена.</td></tr>
+            <tr><td><code>.nsprite</code></td><td>Спрайтовый ресурс: анимации, кадры, длительности.</td></tr>
+            <tr><td><code>.nobject</code></td><td>Объектный ресурс: внешний вид, скрипт, пресет, стартовые настройки.</td></tr>
+            <tr><td><code>.nanim</code></td><td>Ресурс анимации: path curve, opacity/scale/rotation/skew keys и preview texture.</td></tr>
+            <tr><td><code>.ntrigger</code></td><td>Триггерный ресурс: граф условий и действий.</td></tr>
+            <tr><td><code>.nshader</code></td><td>Preset Shader Designer, из которого можно сгенерировать готовый <code>.frag</code>.</td></tr>
+            <tr><td><code>.json</code></td><td>Проект, локализация и другие структурные данные.</td></tr>
+            <tr><td><code>.py</code></td><td>Игровая логика на Python.</td></tr>
+            <tr><td><code>.frag</code></td><td>Фрагментный шейдер постобработки.</td></tr>
+            <tr><td><code>.html/.css/.js</code></td><td>HTML UI интерфейс.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="build" data-search>
+        <h2>29. Сборка и экспорт</h2>
+        <p>
+          При экспорте редактор упаковывает рантайм и весь игровой контент в готовую папку игры.
+        </p>
+        <table>
+          <thead><tr><th>Шаг</th><th>Что делает редактор</th></tr></thead>
+          <tbody>
+            <tr><td>1. SaveAll</td><td>Сохраняет сцену, проект, ресурсы и текущие правки.</td></tr>
+            <tr><td>2. Копирование рантайма</td><td>Берёт <code>NovaIsoRuntime.exe</code> и нужные <code>.dll/.pyd</code>.</td></tr>
+            <tr><td>3. Копирование контента</td><td>Кладёт в билд папки <code>assets</code>, <code>scripts</code>, <code>ui</code>, <code>levels</code>, <code>resources</code>, <code>localization</code>, <code>shaders</code>.</td></tr>
+            <tr><td>4. Запись проекта</td><td>Формирует <code>project.json</code> для рантайма.</td></tr>
+            <tr><td>5. Упаковка</td><td>Создаёт пакет контента <code>content.npak</code>.</td></tr>
+            <tr><td>6. Ресурсы exe</td><td>Если указаны иконка или splash, встраивает их в приложение.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="limits" data-search>
+        <h2>30. Ограничения и текущие рамки</h2>
+        <div class="warning">
+          Этот раздел важен, потому что мануал должен описывать текущую реальность движка, а не только желаемое поведение.
+        </div>
+        <ul>
+          <li>HTML UI не является браузером и не поддерживает полноценный DOM, сторонние JS-библиотеки или сетевые API.</li>
+          <li>Набор trigger actions и conditions ограничен тем, что перечислено в разделе выше.</li>
+          <li>RT Lights в движке означает real-time shader lighting, а не физически корректную трассировку лучей и не полноценный path tracing.</li>
+          <li><code>Reflection</code> даёт стилизованный мокрый/глянцевый блик от ламп, а не полное зеркальное отражение сцены.</li>
+          <li>Pseudo 3D строится как 2.5D-экструзия спрайта и зависит от активной virtual camera, а не от настоящей 3D-геометрии.</li>
+          <li>Shader Stack видит только пользовательские постэффекты; внутренние шейдеры движка скрыты и не должны добавляться в список эффектов.</li>
+        </ul>
+        <div class="good">
+          Если дальше захочешь, следующий логичный этап для документации: добавить отдельные разделы по формату <code>project.json</code>,
+          подробной схеме <code>.niso</code>, таблице локализационных ключей и справочник по каждому встроенному preset script.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const input = document.getElementById("search");
+    const sections = Array.from(document.querySelectorAll("[data-search]"));
+    const tocLinks = Array.from(document.querySelectorAll("#toc a"));
+
+    function applyFilter() {
+      const query = input.value.trim().toLowerCase();
+      sections.forEach((section) => {
+        const hit = !query || section.textContent.toLowerCase().includes(query);
+        section.classList.toggle("hidden", !hit);
+      });
+      tocLinks.forEach((link) => {
+        const target = document.querySelector(link.getAttribute("href"));
+        const hit = target && !target.classList.contains("hidden");
+        link.classList.toggle("hidden", !hit);
+      });
+    }
+
+    function updateActiveLink() {
+      let current = null;
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 160 && rect.bottom >= 160) current = section.id;
+      });
+      tocLinks.forEach((link) => {
+        link.classList.toggle("active", current && link.getAttribute("href") === "#" + current);
+      });
+    }
+
+    input.addEventListener("input", applyFilter);
+    document.addEventListener("scroll", updateActiveLink, { passive: true });
+    applyFilter();
+    updateActiveLink();
+  </script>
+</body>
+</html>
