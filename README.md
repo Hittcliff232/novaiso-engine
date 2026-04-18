@@ -50,4 +50,3 @@ Runtime with the demo project:
 ```
 
 If no project path is passed, the runtime falls back to the copied `demo_project` folder next to the executable.
-"# novaiso-engine" 
